@@ -10,6 +10,5 @@ def receber_mensagem():
     return "OK", 200
 
 if __name__ == "__main__":
-    # O Render exige que pegemos a porta dinâmica dele
     porta = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=porta)
