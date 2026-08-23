@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # --- PREENCHA COM SEUS DADOS ---
 API_URL = "https://evolution-api-jubileu.onrender.com"
-API_KEY = "COLE_SUA_SENHA_AQUI"
+API_KEY = "JubileuForte123!"
 NOME_INSTANCIA = "jubileu" 
 # -------------------------------
 
