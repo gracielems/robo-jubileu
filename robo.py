@@ -1,12 +1,13 @@
 from flask import Flask, request
 import requests
+import os
 
 app = Flask(__name__)
 
 # --- PREENCHA COM SEUS DADOS ---
 API_URL = "https://evolution-api-jubileu.onrender.com"
 API_KEY = "COLE_SUA_SENHA_AQUI"
-NOME_INSTANCIA = "jubileu" # Nome da conexão do WhatsApp
+NOME_INSTANCIA = "jubileu" 
 # -------------------------------
 
 @app.route("/webhook", methods=["POST"])
@@ -17,7 +18,6 @@ def receber_mensagem():
         remetente = dados['data']['key']['remoteJid']
         enviado_por_mim = dados['data']['key']['fromMe']
         
-        # Só responde se a mensagem veio do cliente
         if not enviado_por_mim:
             url_envio = f"{API_URL}/message/sendText/{NOME_INSTANCIA}"
             headers = {"apikey": API_KEY, "Content-Type": "application/json"}
@@ -34,4 +34,5 @@ def receber_mensagem():
     return "OK", 200
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
