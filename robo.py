@@ -13,7 +13,6 @@ NOME_INSTANCIA = "jubileu2"
 @app.route("/webhook", methods=["POST"])
 def receber_mensagem():
     dados = request.json
-    print("Mensagem recebida do WhatsApp:", dados)
     
     try:
         if dados.get('event') == 'messages.upsert':
@@ -21,7 +20,11 @@ def receber_mensagem():
             enviado_por_mim = dados['data']['key']['fromMe']
             
             if not enviado_por_mim:
-                # Captura o texto da mensagem recebida para o robô ler
+                # 👇 TRAVA PARA IGNORAR GRUPOS 👇
+                if "@g.us" in remetente:
+                    return "OK", 200
+                    
+                # Captura o texto da mensagem
                 texto_recebido = ""
                 mensagem_dados = dados.get('data', {}).get('message', {})
                 if 'extendedTextMessage' in mensagem_dados:
@@ -39,7 +42,7 @@ def receber_mensagem():
                 else:
                     texto_resposta = "Olá! 🪿 Aqui é o Jubileu!\n\nVocê prefere fazer o pedido pelo nosso site ou mandar por aqui mesmo (texto/áudio)?\n\n📲 Cardápio digital: https://jubilu-delivery.streamlit.app/\n\n(Digite *taxa* para ver os locais e valores de entrega)."
 
-                # Prepara e envia a resposta
+                # Envia a resposta
                 url_envio = f"{API_URL}/message/sendText/{NOME_INSTANCIA}"
                 headers = {"apikey": API_KEY, "Content-Type": "application/json"}
                 payload = {
@@ -47,8 +50,7 @@ def receber_mensagem():
                     "text": texto_resposta
                 }
                 
-                resposta = requests.post(url_envio, json=payload, headers=headers)
-                print(f"Tentativa de envio -> Status: {resposta.status_code} | Resposta da API: {resposta.text}")
+                requests.post(url_envio, json=payload, headers=headers)
                 
     except Exception as e:
         print("🚨 ERRO NO CÓDIGO:", e)
