@@ -7,7 +7,7 @@ app = Flask(__name__)
 # --- PREENCHA COM SEUS DADOS ---
 API_URL = "https://evolution-api-jubileu.onrender.com"
 API_KEY = "JubileuForte123!"
-NOME_INSTANCIA = "jubileu" 
+NOME_INSTANCIA = "jubileu2" 
 # -------------------------------
 
 @app.route("/webhook", methods=["POST"])
