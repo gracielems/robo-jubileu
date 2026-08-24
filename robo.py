@@ -1,5 +1,4 @@
-
- from flask import Flask, request
+from flask import Flask, request
 import requests
 import os
 
@@ -17,7 +16,6 @@ def receber_mensagem():
     print("Mensagem recebida do WhatsApp:", dados)
     
     try:
-        # Só tenta responder se for uma mensagem nova de texto
         if dados.get('event') == 'messages.upsert':
             remetente = dados['data']['key']['remoteJid']
             enviado_por_mim = dados['data']['key']['fromMe']
